@@ -1,0 +1,32 @@
+.container{
+
+}
+.header{
+    color: #ff5f7e;
+    line-height: inherit;
+    padding-top: 20px;
+    background-color: #b1b1b1;
+}
+/*.wrapper{*/
+/*    display: flex;*/
+/*    justify-content:space-between;*/
+/*    align-items: center;*/
+/*}*/
+
+.blank{
+    display: flex;
+    background-color: #fff;
+    width: 350px;
+    margin-left: 15px;
+    flex-direction: column;
+    border:1px solid black;
+    margin-bottom: 15px;
+    padding: 5px;
+}
+.item-photo{
+    display: block;
+    object-fit: cover;
+    max-width: 350px;
+    height: 300px;
+
+}
