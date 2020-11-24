@@ -1,9 +1,11 @@
-import React from "react";
+import React,{PureComponent} from "react";
 import './App.css';
 import preloader from '../img/loading.gif';
 import {Item} from "./item";
 
-export class App extends React.Component {
+
+
+export class App extends PureComponent {
     constructor() {
         super();
 
