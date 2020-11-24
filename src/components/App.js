@@ -69,13 +69,17 @@ export class App extends React.Component {
         })
     }
 
+ getItemsByComments=( items, minComments)=>{
+        return items
+            .filter(item=>item.data.num_comments >= minComments)
+            .sort(
+                (a,b)=>b.data.num_comments-a.data.num_comments);
+ }
+
     render() {
         const { items, isLoading,enableAutoRefresh,minComments } = this.state;
         //сортировка и фильтрация  по минимальному количеству комментариев
-        const itemsSortByComments=items
-            .sort(
-            (a,b)=>b.data.num_comments-a.data.num_comments)
-            .filter(item=>item.data.num_comments >= minComments);
+        const itemsSortByComments=this.getItemsByComments(items, minComments);
 
         return (
             <div className='container'>
@@ -95,9 +99,12 @@ export class App extends React.Component {
                 />
                 <div className="wrapper">
                     {isLoading ? <div><img src={preloader} alt="preloader"/>LOADING...</div>
-                        : itemsSortByComments.map(item => <Item key={item.data.id}
+                        : itemsSortByComments.length>0 ? (
+                            itemsSortByComments.map(item => <Item key={item.data.id}
                                                                 data={item.data}
-                        />)
+                        />)):(
+                            <p> No results found matching your criteria</p>
+                        )
                     }
                 </div>
             </div>
