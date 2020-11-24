@@ -11,6 +11,7 @@ export class App extends React.Component {
             items:[],
             isLoader:false,
             enableAutoRefresh:false,
+            minComments:0,
         };
     }
     //https://www.reddit.com/r/reactjs.json?limit=100
@@ -62,24 +63,43 @@ export class App extends React.Component {
             }
         );
     }
+    updateMinComments=(event)=>{
+        this.setState({
+            minComments:Number(event.target.value)
+        })
+    }
 
     render() {
-        const { items, isLoading,enableAutoRefresh} = this.state;
-        const itemsSortByComments=items.sort(
-            (a,b)=>b.data.num_comments-a.data.num_comments
-        );
+        const { items, isLoading,enableAutoRefresh,minComments } = this.state;
+        //сортировка и фильтрация  по минимальному количеству комментариев
+        const itemsSortByComments=items
+            .sort(
+            (a,b)=>b.data.num_comments-a.data.num_comments)
+            .filter(item=>item.data.num_comments >= minComments);
 
         return (
             <div className='container'>
-                <h1 className='header'>Top comment</h1>
-                <button type="button" onClick={this.updateAutoRefresh}>
-                    {enableAutoRefresh? "Stop":"Start"} auto-refresh</button>
-
-                {isLoading ? <div><img src={preloader} alt="preloader"/>LOADING...</div>
-                           : itemsSortByComments.map(item => <Item key={item.data.id}
-                                         data={item.data}
-                    />)
-                }
+                <h1 className='header'>Top commented</h1>
+                <div>
+                    <p>Current filter: {minComments}</p>
+                    <button type="button" onClick={this.updateAutoRefresh}>
+                        {enableAutoRefresh ? "Stop" : "Start"} auto-refresh
+                    </button>
+                </div>
+                <input type="range"
+                       className="input-counts-comments"
+                       min={0}
+                       max={500}
+                       value={minComments}
+                       onChange={this.updateMinComments}
+                />
+                <div className="wrapper">
+                    {isLoading ? <div><img src={preloader} alt="preloader"/>LOADING...</div>
+                        : itemsSortByComments.map(item => <Item key={item.data.id}
+                                                                data={item.data}
+                        />)
+                    }
+                </div>
             </div>
         );
     }
